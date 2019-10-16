@@ -2,12 +2,14 @@ package lenaickSorimoutou;
 
 public class Item {
     private String name;
+    private String info;
     private String price;
     private String weight;
     private String url;
 
-    Item(String name, String price, String weight, String url){
+    Item(String name, String info, String price, String weight, String url){
         this.name = name;
+        this.info = info;
         this.price = price; 
         this.url = url;
         this.weight = weight;
@@ -15,6 +17,10 @@ public class Item {
 
     public String getName(){
         return this.name;
+    }
+
+    public String getInfo() {
+        return this.info;
     }
     
     public String getPrice() {

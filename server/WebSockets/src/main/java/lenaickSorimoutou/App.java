@@ -1,8 +1,6 @@
 package lenaickSorimoutou;
 
-// java librairy
 import java.io.IOException;
- 
 /**
  * Hello world!
  *
@@ -27,30 +25,29 @@ public class App {
         }
 
         @javax.websocket.OnMessage
-        public void onMessage(javax.websocket.Session session, String message) {
+        public void onMessage(javax.websocket.Session session, String message) 
+            throws InterruptedException, IOException {
             System.out.println("Message from JavaScript: " + message);
-
+            Scrapper s = new Scrapper(message);
+            session.getBasicRemote().sendText(s.getString());
         }
 
         @javax.websocket.OnOpen
         public void onOpen(javax.websocket.Session session, javax.websocket.EndpointConfig ec)
-                throws java.io.IOException {
+                throws IOException {
             System.out.println("OnOpen... " + ec.getUserProperties().get("Author"));
-            session.getBasicRemote().sendText("{Handshaking: \"Yes\"}");
         }
         
     }
 
     public static void main(String[] args) throws IOException {
 
-        java.util.Map<String, Object> user_properties = new java.util.HashMap();
+        java.util.Map<String, Object> user_properties = new java.util.HashMap<String, Object>();
         user_properties.put("Author", "LenaickSorimoutou");
 
         org.glassfish.tyrus.server.Server server = new org.glassfish.tyrus.server.Server("localhost", 1963,
                 "/LenaickSorimoutou", user_properties /* or 'null' */, My_ServerEndpoint.class);
 
-        Scrapper s = new Scrapper("riz");
-        s.writeFile();
         try {
             server.start();
             // The Web page is launched from Java:         
@@ -60,7 +57,6 @@ public class App {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-
             server.stop();
         }
     }

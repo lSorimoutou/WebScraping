@@ -1,30 +1,30 @@
 package lenaickSorimoutou;
 
+import java.io.FileOutputStream;
 // java librairy
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
+import java.io.Writer;
 import java.util.ArrayList;
+
+//Gson
+import com.google.gson.GsonBuilder;
 
 // Selenium
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-//Gson
-import com.google.gson.GsonBuilder;
-
-
-import java.io.FileOutputStream;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
 
 public class Scrapper {
 
     private java.util.List<Item> _jsonInString;
 
-    Scrapper(String prod){
+    Scrapper(String prod) throws InterruptedException{
 
         String searchQuery = prod;
         String searchUrl = "";
@@ -46,6 +46,17 @@ public class Scrapper {
         driver.navigate().to(searchUrl);
 
         String itemXpath = ".//div[@class='ui cards products']/div";
+        
+        // Scroll down to the bottom.
+
+        Thread.sleep(1000);
+        for (int i = 0; i < 3000; i = i + 500) {
+            JavascriptExecutor jse = (JavascriptExecutor)driver;
+            jse.executeScript("window.scrollTo(0," + i + " )");
+            // Wait to load the scrolled page
+            Thread.sleep(1000);
+        }
+        
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(itemXpath)));
         java.util.List<WebElement> items = driver.findElements(By.xpath(itemXpath));
 
@@ -66,8 +77,7 @@ public class Scrapper {
                     // research the name2
                     spanInfo = item.findElement(By.xpath(".//div[@class='grocery-item-brand']/p"));
                     // research the image
-                    imgImg = item.findElement(By.xpath(".//img"));
-                    System.out.println(imgImg);
+                    imgImg = item.findElement(By.tagName("img"));
                     // research the price
                     divPrice = item.findElement(By.xpath(".//div[@class='grocery-item__normal-price']"));
                     // research the weight
@@ -92,10 +102,10 @@ public class Scrapper {
         driver.close();
     }
 
-    public void writeFile(){
+    public void writeFile(String path){
         // Java objects to File
         try (Writer writer = new OutputStreamWriter(
-                new FileOutputStream("Browser" + java.io.File.separatorChar + "DB" + java.io.File.separatorChar + "item.json"), "UTF-8")) {
+                new FileOutputStream(path), "UTF-8")) {
             final GsonBuilder builder = new GsonBuilder();
             builder.setPrettyPrinting();
             builder.disableHtmlEscaping();
@@ -103,5 +113,12 @@ public class Scrapper {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public String getString(){
+        final GsonBuilder builder = new GsonBuilder();
+        builder.setPrettyPrinting();
+        builder.disableHtmlEscaping();
+        return builder.create().toJson(this._jsonInString);
     }
 }

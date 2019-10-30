@@ -39,7 +39,7 @@ export default function RecipeReviewCard(props) {
 
 
     return (
-        <Card className={classes.card}>
+        <Card className={classes.card}> 
             <CardHeader
                 action={
                     <IconButton aria-label="settings">
@@ -55,7 +55,7 @@ export default function RecipeReviewCard(props) {
                 title={props.name}
             />
             <CardContent>
-                <Typography variant="body2" color="textSecondary" component="p" align='center'>
+                <Typography variant="h5" color="error" component="P" align='center'>
                     {props.price + "€"}
         </Typography>
             </CardContent>

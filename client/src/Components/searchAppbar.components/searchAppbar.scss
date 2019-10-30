@@ -1,0 +1,21 @@
+$base-color: #ffff;
+$active-color : #61dafb;
+$hover-color : #8be2fa;
+a {
+    text-decoration: none;
+    color: $base-color;
+
+    &.active{
+        color: $active-color;
+    }
+
+    &:hover{
+        color: $hover-color;
+        transition: 0.3s;
+    }
+}
+
+h6{
+    color: $active-color;
+    font-weight: bold !important;
+}

@@ -45,60 +45,70 @@ public class Scrapper {
 
         driver.navigate().to(searchUrl);
 
-        String itemXpath = ".//div[@class='ui cards products']/div";
-        
-        // Scroll down to the bottom.
+        // search the number of goods
+        String nbArticleXpath = "/html/body/div[1]/div/div[1]/div/div[2]/div/div[3]/div[3]/div[2]";
+        String nbArt = driver.findElement(By.xpath(nbArticleXpath)).getText();
 
-        Thread.sleep(1000);
-        for (int i = 0; i < 3000; i = i + 500) {
-            JavascriptExecutor jse = (JavascriptExecutor)driver;
-            jse.executeScript("window.scrollTo(0," + i + " )");
-            // Wait to load the scrolled page
+        if(!nbArt.equals("0 Articles")){
+            String itemXpath = ".//div[@class='ui cards products']/div";
+        
+            // Scroll down to the bottom.
+
             Thread.sleep(1000);
-        }
-        
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(itemXpath)));
-        java.util.List<WebElement> items = driver.findElements(By.xpath(itemXpath));
-
-        if (items.isEmpty()) {
-            System.out.println("No items found !");
-        } else {
-            java.util.List<Item> jsonInString = new ArrayList<Item>();
-
-            for (WebElement item : items) {
-                WebElement spanName = null;
-                WebElement spanInfo = null;
-                WebElement divPrice = null;
-                WebElement divWeight = null;
-                WebElement imgImg = null;
-                try {
-                    // research the name 
-                    spanName = item.findElement(By.xpath(".//div[@class='grocery-item-range']"));
-                    // research the name2
-                    spanInfo = item.findElement(By.xpath(".//div[@class='grocery-item-brand']/p"));
-                    // research the image
-                    imgImg = item.findElement(By.tagName("img"));
-                    // research the price
-                    divPrice = item.findElement(By.xpath(".//div[@class='grocery-item__normal-price']"));
-                    // research the weight
-                    divWeight = item.findElement(By.xpath(".//div[@class='conditioning-description']"));
-                } catch (Exception e) {
-                    System.out.println(e);
-                    System.out.println("Element not found !");
-                }
-
-                String itemName = spanName.getText();
-                String info = spanInfo.getText();
-                String imageUrl = imgImg.getAttribute("src");
-                String itemPrice = divPrice == null ? "0.0" : divPrice.getText().split(" ")[0];
-                String itemWeight = divWeight == null ? "0.0" : divWeight.getText();
-
-                Item itemObject = new Item(itemName, info, itemPrice, itemWeight, imageUrl);
-                jsonInString.add(itemObject);
-
+            for (int i = 0; i < 3000; i = i + 500) {
+                JavascriptExecutor jse = (JavascriptExecutor)driver;
+                jse.executeScript("window.scrollTo(0," + i + " )");
+                // Wait to load the scrolled page
+                Thread.sleep(1000);
             }
-            this._jsonInString = jsonInString;
+            
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(itemXpath)));
+            java.util.List<WebElement> items = driver.findElements(By.xpath(itemXpath));
+
+            if (items.isEmpty()) {
+                System.out.println("No items found !");
+            } else {
+                java.util.List<Item> jsonInString = new ArrayList<Item>();
+
+                for (WebElement item : items) {
+                    WebElement spanName = null;
+                    WebElement spanInfo = null;
+                    WebElement divPrice = null;
+                    WebElement divWeight = null;
+                    WebElement imgImg = null;
+                    try {
+                        // research the name 
+                        spanName = item.findElement(By.xpath(".//div[@class='grocery-item-range']"));
+                        // research the name2
+                        spanInfo = item.findElement(By.xpath(".//div[@class='grocery-item-brand']/p"));
+                        // research the image
+                        imgImg = item.findElement(By.tagName("img"));
+                        // research the price
+                        divPrice = item.findElement(By.xpath(".//div[@class='grocery-item__normal-price']"));
+                        // research the weight
+                        divWeight = item.findElement(By.xpath(".//div[@class='conditioning-description']"));
+                    } catch (Exception e) {
+                        System.out.println(e);
+                        System.out.println("Element not found !");
+                    }
+
+                    String itemName = spanName.getText();
+                    String info = spanInfo.getText();
+                    String imageUrl = imgImg.getAttribute("src");
+                    String itemPrice = divPrice == null ? "0.0" : divPrice.getText().split(" ")[0];
+                    String itemWeight = divWeight == null ? "0.0" : divWeight.getText();
+
+                    Item itemObject = new Item(itemName, info, itemPrice, itemWeight, imageUrl);
+                    jsonInString.add(itemObject);
+
+                }
+                this._jsonInString = jsonInString;
+            }
         }
+        else{
+            this._jsonInString = null;
+        }
+        // close the browser
         driver.close();
     }
 
@@ -116,9 +126,15 @@ public class Scrapper {
     }
 
     public String getString(){
-        final GsonBuilder builder = new GsonBuilder();
-        builder.setPrettyPrinting();
-        builder.disableHtmlEscaping();
-        return builder.create().toJson(this._jsonInString);
+        if(this._jsonInString != null){
+            final GsonBuilder builder = new GsonBuilder();
+            builder.setPrettyPrinting();
+            builder.disableHtmlEscaping();
+            return builder.create().toJson(this._jsonInString);
+        }
+        else {
+            return "Nothing";
+        }
+        
     }
 }

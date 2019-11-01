@@ -78,7 +78,6 @@ class App extends Component {
           <Switch>
             <Route exact path='/' component={() => <HomePage data={this.state.data} loading={this.state.loading} />} />
             <Route exact path='/CR' />
-            <Route exact path='/docs' />
           </Switch>
         </Router>
       </div>

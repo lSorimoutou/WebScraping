@@ -87,7 +87,6 @@ export default function SearchAppBar(props) {
                     <ListItemText inset>
                         <Link  to="/"><Button color="inherit">ACCUEIL</Button></Link>
                         <Link to="/CR"><Button color="inherit">COMPTE-RENDU</Button></Link>
-                        <Link  to="/docs"><Button color="inherit">DOCS</Button></Link>
                     </ListItemText>
                     <ListItemText inset>
                         <div className={classes.search}>

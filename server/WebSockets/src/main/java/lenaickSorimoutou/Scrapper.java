@@ -18,6 +18,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.firefox.FirefoxBinary;
 
 
 public class Scrapper {
@@ -29,8 +31,6 @@ public class Scrapper {
         String searchQuery = prod;
         String searchUrl = "";
 
-        System.setProperty("webdriver.gecko.driver", "./geckodriver.exe");
-
         try {
             searchUrl = "https://www.monoprix.fr/courses/search/"
                     + java.net.URLEncoder.encode(searchQuery, "UTF-8") + "/" + java.net.URLEncoder.encode(searchQuery, "UTF-8");
@@ -40,7 +40,12 @@ public class Scrapper {
             ;
         }
 
-        FirefoxDriver driver = new FirefoxDriver();
+        FirefoxBinary firefoxBinary = new FirefoxBinary();
+        firefoxBinary.addCommandLineOptions("--headless");
+        System.setProperty("webdriver.gecko.driver", "./geckodriver.exe");
+        FirefoxOptions firefoxOptions = new FirefoxOptions();
+        firefoxOptions.setBinary(firefoxBinary);
+        FirefoxDriver driver = new FirefoxDriver(firefoxOptions);
         WebDriverWait wait = new WebDriverWait(driver, 30);
 
         driver.navigate().to(searchUrl);

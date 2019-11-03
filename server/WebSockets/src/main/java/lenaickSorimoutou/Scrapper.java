@@ -51,14 +51,13 @@ public class Scrapper {
         driver.navigate().to(searchUrl);
 
         // search the number of goods
-        String nbArticleXpath = "/html/body/div[1]/div/div[1]/div/div[2]/div/div[3]/div[3]/div[2]";
+        String nbArticleXpath = ".//div[@class='catalog-page__statistic']";
         String nbArt = driver.findElement(By.xpath(nbArticleXpath)).getText();
 
         if(!nbArt.equals("0 Articles")){
             String itemXpath = ".//div[@class='ui cards products']/div";
         
-            // Scroll down to the bottom.
-
+            // Scroll down to the bottom of the page (for lazzy loading of img)
             Thread.sleep(1000);
             for (int i = 0; i < 3000; i = i + 500) {
                 JavascriptExecutor jse = (JavascriptExecutor)driver;
@@ -67,25 +66,27 @@ public class Scrapper {
                 Thread.sleep(1000);
             }
             
+            // wait until visibility of the item list
             wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(itemXpath)));
             java.util.List<WebElement> items = driver.findElements(By.xpath(itemXpath));
 
             if (items.isEmpty()) {
                 System.out.println("No items found !");
             } else {
+                // data mining
                 java.util.List<Item> jsonInString = new ArrayList<Item>();
 
                 for (WebElement item : items) {
                     WebElement spanName = null;
-                    WebElement spanInfo = null;
+                    WebElement pInfo = null;
                     WebElement divPrice = null;
                     WebElement divWeight = null;
                     WebElement imgImg = null;
                     try {
                         // research the name 
                         spanName = item.findElement(By.xpath(".//div[@class='grocery-item-range']"));
-                        // research the name2
-                        spanInfo = item.findElement(By.xpath(".//div[@class='grocery-item-brand']/p"));
+                        // research info of the item
+                        pInfo = item.findElement(By.xpath(".//div[@class='grocery-item-brand']/p"));
                         // research the image
                         imgImg = item.findElement(By.tagName("img"));
                         // research the price
@@ -98,7 +99,7 @@ public class Scrapper {
                     }
 
                     String itemName = spanName.getText();
-                    String info = spanInfo.getText();
+                    String info = pInfo.getText();
                     String imageUrl = imgImg.getAttribute("src");
                     String itemPrice = divPrice == null ? "0.0" : divPrice.getText().split(" ")[0];
                     String itemWeight = divWeight == null ? "0.0" : divWeight.getText();
@@ -118,7 +119,7 @@ public class Scrapper {
     }
 
     public void writeFile(String path){
-        // Java objects to File
+        // Convert java objects to File
         try (Writer writer = new OutputStreamWriter(
                 new FileOutputStream(path), "UTF-8")) {
             final GsonBuilder builder = new GsonBuilder();
@@ -131,6 +132,7 @@ public class Scrapper {
     }
 
     public String getString(){
+        // Convert java Objets to Json 
         if(this._jsonInString != null){
             final GsonBuilder builder = new GsonBuilder();
             builder.setPrettyPrinting();

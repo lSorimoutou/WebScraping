@@ -10,6 +10,7 @@ import './App.scss';
 import HomePage from './Pages/HomePage';
 import SearchAppBar from './Components/searchAppbar.components/searchAppbar';
 import Singleton from './socket';
+import CRPage from './Pages/CRPage';
 
 class App extends Component {
 
@@ -77,7 +78,7 @@ class App extends Component {
             title="Web Scraping" />
           <Switch>
             <Route exact path='/' component={() => <HomePage data={this.state.data} loading={this.state.loading} />} />
-            <Route exact path='/CR' />
+            <Route exact path='/CR' component = { () => <CRPage/>}/>
           </Switch>
         </Router>
       </div>

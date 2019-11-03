@@ -1,6 +1,6 @@
 $base-color: #ffff;
-$active-color : #61dafb;
-$hover-color : #8be2fa;
+$active-color : #3886c9;
+$hover-color : #438bca;
 a {
     text-decoration: none;
     color: $base-color;
@@ -17,5 +17,5 @@ a {
 
 h6{
     color: $active-color;
-    font-weight: bold !important;
+    font-weight: 700!important;
 }

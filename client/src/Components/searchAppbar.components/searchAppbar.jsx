@@ -11,6 +11,8 @@ import ListItemText from '@material-ui/core/ListItemText';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
 import Button from '@material-ui/core/Button';
+import GitHubIcon from '@material-ui/icons/GitHub';
+
 
 import './searchAppbar.scss';
 
@@ -29,6 +31,9 @@ const useStyles = makeStyles(theme => ({
         [theme.breakpoints.up('sm')]: {
             display: 'block',
         },
+    },
+    appBar: {
+        zIndex: theme.zIndex.drawer + 1,
     },
     search: {
         position: 'relative',
@@ -67,6 +72,10 @@ const useStyles = makeStyles(theme => ({
             },
         },
     },
+    githubIcon : {
+        padding : theme.spacing(1,2),
+
+    }
 }));
 
 const style = {
@@ -79,10 +88,10 @@ export default function SearchAppBar(props) {
 
     return (
         <div className={classes.root}>
-            <AppBar position="static" style={style}>
+            <AppBar style={style} position="fixed" className={classes.appBar}>
                 <Toolbar>
                     <Typography className={classes.title} variant="h6" noWrap>
-                        {props.title.toUpperCase()}
+                        {props.title}
                     </Typography>
                     <ListItemText inset>
                         <Link  to="/"><Button color="inherit">ACCUEIL</Button></Link>
@@ -111,7 +120,13 @@ export default function SearchAppBar(props) {
                             />
                         </div>
                     </ListItemText>
-                   
+                    <ListItemText inset>
+                        <a href="https://github.com/lSorimoutou/WebScraping">
+                            <Button color="inherit">
+                                GITHUB <GitHubIcon className={classes.githubIcon} />
+                            </Button>
+                        </a>
+                    </ListItemText>
                 </Toolbar>
             </AppBar>
 

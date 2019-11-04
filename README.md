@@ -1,6 +1,6 @@
 # Projet de WebScraping 
 
-Le projet consiste à fabriquer une application de Web scraping sur un site de e-commerce afin de récupérer des informations sur des produits de consommation courante. Dans le cadre de mon projet, j’ai décidé de choisir le site marchand monoprix.
+Le projet consiste à fabriquer une application de Web scraping sur un site de e-commerce afin de récupérer des informations sur des produits de consommation courante. Dans le cadre de mon projet de L3 Informatique.
 
 # Installation
 

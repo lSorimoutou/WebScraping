@@ -47,7 +47,7 @@ export default function RecipeReviewCard(props) {
                     </IconButton>
                 }
                 title={props.name}
-                subheader={props.info + props.weight}
+                subheader={props.info + " " + props.weight}
             />
             <CardMedia
                 className={classes.media}

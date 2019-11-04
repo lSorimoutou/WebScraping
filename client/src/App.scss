@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+$base-color : #282c34;
 $active-color : #3886c9;
 $hover-color : #0e5ca0;
 $font-stack: "Roboto", sans-serif;
@@ -18,7 +19,7 @@ h1, h2, h3, h4,h5 {
     letter-spacing: 2px;
     padding-top: 15px;
     margin-bottom: 0;
-    color : #282c34!important;
+    color : $base-color!important;
     
 }
 
@@ -73,7 +74,7 @@ div.body{
     letter-spacing: 2px;
     padding-top: 15px;
     font-size: 20px;
-    color : #282c34!important;
+    color : $base-color!important;
   }
 
   span.imgSubTitle{
@@ -99,4 +100,34 @@ span.subTitle {
     font-size: 18px;
     font-weight: 300;
     color:#6d6d6d;
+}
+
+.Diag {
+  width: 75%;
+  height: 75%;
+  margin:0 auto;
+}
+
+.sideBarLink{
+  text-decoration: none;
+  color : $base-color;
+  &:hover{
+      color: #6d6d6d;
+    }
+  &.active span{
+     color : $base-color;
+     font-weight: bold;
+  }
+}
+
+li{
+    padding: 10px 0px;
+  }
+
+p.taille{
+  padding: 0px 50px;
+}
+
+svg {
+  box-sizing: initial;
 }

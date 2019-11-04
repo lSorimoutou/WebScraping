@@ -16,7 +16,9 @@ import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 
-const drawerWidth = 240;
+import { Link } from "react-scroll";
+
+const drawerWidth = 340;
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -59,10 +61,19 @@ export default function CRPage() {
             >
                 <div className={classes.toolbar} />
                 <List>
-                    {['Introduction', 'I.', 'II.', 'III.'].map((text, index) => (
-                        <ListItem button key={text}>
-                            <ListItemText primary={text} />
-                        </ListItem>
+                    {['Introduction', 'I.FONCTIONNEMENT GLOBAL DE L’APPLICATION WEB', 'II.CHOIX MISE EN ŒUVRE ', 'III. LES DONNÉES RÉCUPÉRER ', 'IV. SOURCES'].map((text, index) => (
+                        <Link 
+                            to={`${index}`} 
+                            spy={true}
+                            smooth={true}
+                            offset={-70}
+                            duration={500}
+                            className="sideBarLink"
+                        >
+                            <ListItem button key={text}>
+                                <ListItemText primary={text} />
+                            </ListItem>
+                        </Link>
                     ))}
                 </List>
                 <Divider />
@@ -76,40 +87,41 @@ export default function CRPage() {
                 </div>
                 <div className="body">
                     <Container maxWidth="lg">
-                        <section id="intro">
+                        <section id="0">
                             <h3>Introduction</h3>
                             <p>
-                                Le projet consistait à fabriquer une application de Web scraping sur
+                                Le projet consistait à fabriquer <strong>une application de Web scraping</strong> sur
                                 un site de e-commerce afin de récupérer des informations sur des produits
                                 de consommation courante. Dans le cadre de mon projet,
                                 j’ai décidé de choisir le site marchand <strong>monoprix</strong>.
                             </p>
                             <hr />
                         </section>
-                        <section id="first">
+                        <section id="1">
                             <h3>I.	FONCTIONNEMENT GLOBAL DE L’APPLICATION WEB</h3>
                             <p>
                                 La conception de l'application web a été réalisé avec deux langages de programmation.
-                                L'affichage a été réalisé avec HTML, SASS et JavaScript.
-                                Le Web Scraping est réalisé avec Java.
+                                L'affichage a été réalisé avec <strong>HTML, SASS et JavaScript.</strong>
+                                Le Web Scraping est réalisé avec <strong>Java</strong>.
                                 La liaison entre les deux langages de programmation se fait via un WebSocket.
                             </p>
                             <p>
-                                Pour débuter la recherche de produit, vous devez utiliser la barre de recherche
-                                sur la page web. Après avoir validé votre recherche, le nom du produit que vous
-                                avez entré sera envoyé à l'api Java.
+                                Pour débuter la recherche de produit, on utilise la barre de recherche
+                                sur la page web. Après avoir validé la recherche, le nom du produit entré 
+                                sera envoyé à l'api Java.
                             </p>
                             <p>
-                                Par le biais de la bibliothèque sélénium, on va extraire les données du site marchand
-                                monoprix. Après avoir extraite les données du site marchand, java crée un objet avec toutes
-                                les informations scraper, puis en utilisant la bibliothèque Gson, on convertit l'objet au
+                                Par le biais de la bibliothèque <strong>sélénium</strong>, on va extraire les données du site marchand
+                                monoprix. Java va ensuite crée un objet avec toutes
+                                les informations scraper, puis en utilisant la bibliothèque <strong>Gson</strong>, on convertit l'objet au
                                 format json et on l'envoie au client (JavaScript).
+                                Le diagramme d'activité suivant résume le fonctionnement de l'application web.
                             </p>
                             <span className="imgSubTitle">Diagramme d'activité de l'application web</span>
-                            <img src={Diag} alt="Diagramme d'activité de l'application" />
+                            <img src={Diag} alt="Diagramme d'activité de l'application" className="Diag"/>
                             <hr />
                         </section>
-                        <section id="second">
+                        <section id="2">
                             <h3>II.	CHOIX MISE EN ŒUVRE </h3>
                             <p>
                                 Dans cette partie, nous allons détailler les choix mise en œuvre pour la conception de
@@ -171,9 +183,9 @@ export default function CRPage() {
                             <span className="imgSubTitle">Hiérarchie d’utilisation des composants</span>
                             <img src={Figure} className="figure" alt="hiérarchie d’utilisation des composants" />
                             <p>
-                                App est la composante mère, c'est la composante qui sera injectée au sein du nœud DOM.
+                                <strong>App est la composante mère</strong>, c'est la composante qui sera injectée au sein du nœud DOM.
                                 À l'intérieur du composant, on retrouve HomePage, CRPage et SearchAppBar.
-                                SearchAppBar est la barre de l'application composée du nom de l'application, une barre de recherche et des
+                                SearchAppBar est la <strong>barre de l'application</strong> composée du nom de l'application, une barre de recherche et des
                                 buttons permettant la navigation entre les différentes pages.
                             </p>
                             <h5>B.	MATERIAL UI</h5>
@@ -198,12 +210,12 @@ export default function CRPage() {
                             <h5>A.	WEBSCRAPING AVEC SELENIUM</h5>
                             <p>
                                 Le web Scraping est réalisé dans la partie Java par le biais de la bibliothèque Selenium.
-                                Selenium est un framework de test informatique développée
+                                <strong>Selenium</strong> est un framework de test informatique développée
                                 en Java pour le test automatisé d'applications Web.
                                 Mais, nous pouvons aussi l'utiliser pour faire du Web Scraping.
-                                 Effectivement, il est possible de rechercher assez facilement des éléments
-                                 d'une page web avec son xpath (langage de requête pour localiser une portion d'un document XML)
-                                 et il est aussi capable d'extraire les données stockées dans ces différents éléments.
+                                Effectivement, il est possible de rechercher assez facilement des éléments
+                                d'une page web avec son <strong>xpath</strong> (langage de requête pour localiser une portion d'un document XML)
+                                et il est aussi capable <strong>d'extraire les données stockées</strong> dans ces différents éléments.
                             </p>
                             <Grid container spacing={3}>
                                 <Grid item xs={6}>
@@ -224,12 +236,12 @@ export default function CRPage() {
                             </Grid>
                             <h6>a)	Le problème du « lazy-loading »</h6>
                             <p>
-                                Le « lazy-loading » est le chargement des images
-                                seulement quand c'est nécessaire.
+                                Le « lazy-loading »(“chargement fainéant” en français) consiste à spécifier quels composants d’un programme 
+                                doivent être chargés lors du démarrage de celui-ci. 
                                 Par défaut, quand on demande à un navigateur d'afficher une page web,
                                 cette dernière charge toutes les ressources et donc toutes les images.
                                 Ce n'est pas vraiment optimal, c'est pour cela qu'a été inventé le « lazy-loading ».
-                                L'image est chargée seulement quand elle est visible sur la page.
+                                L'image est chargée seulement quand elle est visible sur la page ou utiliser par l'utilisateur.
                             </p>
                             <p>
                                 Dans le cas du Web Scraping avec selenium, j'ai été confronté à ce problème.
@@ -289,7 +301,7 @@ export default function CRPage() {
                             </Grid>
                             <hr />
                         </section>
-                        <section id="third">
+                        <section id="3">
                             <h3>III.	LES DONNÉES RÉCUPÉRER </h3>
                             <p>
                                 Pour un produit donnée, les données récupérer par web scraping sont :
@@ -302,8 +314,28 @@ export default function CRPage() {
                             </ul>
                             <hr />
                         </section>
-                        <section id="fouth">
+                        <section id="4">
                             <h3>IV.	SOURCES</h3>
+                            <p>Les informations présentées peuvent être complétées par les références des sites internet qui suivent</p>
+                            <h5>
+                                FONCTIONNEMENT GLOBAL DE L’APPLICATION WEB
+                            </h5>
+                            <ul>
+                                <li>Modelio : Docs de Modelio <br /> <a href="https://www.modelio.org/documentation-menu/tutorials.html">https://www.modelio.org/documentation-menu/tutorials.html</a></li>
+                            </ul>
+                            <h5>
+                                CHOIX MISE EN ŒUVRE
+                            </h5>
+                            <ul>
+                                <li>React : Documentation de React <br /> <a href="https://fr.reactjs.org/docs/getting-started.html">https://fr.reactjs.org/docs/getting-started.html</a></li>
+                                <li>Material UI : Site officiel de Material UI <br /> <a href="https://material-ui.com/">https://material-ui.com/</a></li>
+                                <li>SASS: Documentation de SASS<br /> <a href="https://sass-lang.com/guide">https://sass-lang.com/guide</a></li>
+                                <li>Wikipedia : Selenium<br /> <a href="https://fr.wikipedia.org/wiki/Selenium_(informatique)">https://fr.wikipedia.org/wiki/Selenium_(informatique)</a></li>
+                                <li>BDM : Lazy-loading natif <br /> <a href="https://www.blogdumoderateur.com/lazy-loading-chrome-firefox-natif/">https://www.blogdumoderateur.com/lazy-loading-chrome-firefox-natif/</a></li>
+                                <li>1min30 : Lazy loading (informatique et web) <br /> <a href="https://www.1min30.com/dictionnaire-du-web/lazy-loading-informatique-et-web">https://www.1min30.com/dictionnaire-du-web/lazy-loading-informatique-et-web/</a></li>
+                                <li>GsonBuilder : java doc de GsonBuilder <br /> <a href="https://static.javadoc.io/com.google.code.gson/gson/2.8.5/com/google/gson/GsonBuilder.html">https://static.javadoc.io/com.google.code.gson/gson/2.8.5/com/google/gson/GsonBuilder.html</a></li>
+                                <li>Gson : java doc de Gson <br /> <a href="https://static.javadoc.io/com.google.code.gson/gson/2.8.5/com/google/gson/Gson.html">https://static.javadoc.io/com.google.code.gson/gson/2.8.5/com/google/gson/Gson.html</a></li>
+                            </ul>
                             <hr />
                         </section>
 

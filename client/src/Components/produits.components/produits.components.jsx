@@ -8,8 +8,10 @@ import RecipeReviewCard from '../card-produit.components/card-produit.components
 export default function Produits(props) {
 
     const items = props.data;
+    const taille = items.length;
     return(
         <div>
+           { items.length !== 0 ? <p className="taille">{taille} Articles.</p> : "" }
             <Grid container
                 spacing={6}
                 direction="row"

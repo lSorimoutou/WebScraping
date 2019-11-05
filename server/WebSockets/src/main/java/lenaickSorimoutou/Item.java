@@ -6,13 +6,19 @@ public class Item {
     private String price;
     private String weight;
     private String url;
+    private String desc;
+    private String ingredients;
+    private String infoNutri;
 
-    Item(String name, String info, String price, String weight, String url){
+    Item(String name, String info, String price, String weight, String url, String desc, String ingredients, String infoNutri){
         this.name = name;
         this.info = info;
         this.price = price; 
         this.url = url;
         this.weight = weight;
+        this.desc = desc;
+        this.ingredients = ingredients;
+        this.infoNutri = infoNutri;
     }
 
     public String getName(){
@@ -33,5 +39,17 @@ public class Item {
     
     public String getUrl() {
         return this.url;
+    }
+
+    public String getDesc() {
+        return this.desc;
+    }
+
+    public String getingredients() {
+        return this.ingredients;
+    }
+    
+    public String getinfoNutri() {
+        return this.infoNutri;
     }
 }

@@ -16,11 +16,14 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.firefox.FirefoxBinary;
 
+// Jsoup
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.Connection;
+import org.jsoup.nodes.Element;
 
 public class Scrapper {
 
@@ -46,29 +49,24 @@ public class Scrapper {
         FirefoxOptions firefoxOptions = new FirefoxOptions();
         firefoxOptions.setBinary(firefoxBinary);
         FirefoxDriver driver = new FirefoxDriver(firefoxOptions);
-        WebDriverWait wait = new WebDriverWait(driver, 30);
 
         driver.navigate().to(searchUrl);
 
         // search the number of goods
-        String nbArticleXpath = ".//div[@class='catalog-page__statistic']";
-        String nbArt = driver.findElement(By.xpath(nbArticleXpath)).getText();
+        String nbArticleXpath = "div.catalog-page__statistic";
+        String nbArt = driver.findElement(By.cssSelector(nbArticleXpath)).getText();
 
         if(!nbArt.equals("0 Articles")){
-            String itemXpath = ".//div[@class='ui cards products']/div";
+            String itemXpath = "div.cards:nth-child(1)>*";
         
             // Scroll down to the bottom of the page (for lazzy loading of img)
-            Thread.sleep(1000);
             for (int i = 0; i < 3000; i = i + 500) {
                 JavascriptExecutor jse = (JavascriptExecutor)driver;
                 jse.executeScript("window.scrollTo(0," + i + " )");
                 // Wait to load the scrolled page
-                Thread.sleep(1000);
             }
             
-            // wait until visibility of the item list
-            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(itemXpath)));
-            java.util.List<WebElement> items = driver.findElements(By.xpath(itemXpath));
+            java.util.List<WebElement> items = driver.findElements(By.cssSelector(itemXpath));
 
             if (items.isEmpty()) {
                 System.out.println("No items found !");
@@ -77,36 +75,49 @@ public class Scrapper {
                 java.util.List<Item> jsonInString = new ArrayList<Item>();
 
                 for (WebElement item : items) {
-                    WebElement spanName = null;
-                    WebElement pInfo = null;
-                    WebElement divPrice = null;
-                    WebElement divWeight = null;
-                    WebElement imgImg = null;
-                    try {
-                        // research the name 
-                        spanName = item.findElement(By.xpath(".//div[@class='grocery-item-range']"));
-                        // research info of the item
-                        pInfo = item.findElement(By.xpath(".//div[@class='grocery-item-brand']/p"));
-                        // research the image
-                        imgImg = item.findElement(By.tagName("img"));
-                        // research the price
-                        divPrice = item.findElement(By.xpath(".//div[@class='grocery-item__normal-price']"));
-                        // research the weight
-                        divWeight = item.findElement(By.xpath(".//div[@class='conditioning-description']"));
-                    } catch (Exception e) {
-                        System.out.println(e);
-                        System.out.println("Element not found !");
+                    
+                    String infoArticle = item.getText();
+                    String listInfo[] = infoArticle.split("\n");
+
+                    String itemName = listInfo[1];
+                    String info = listInfo[0];
+                    String imageUrl = item.findElement(By.tagName("img")).getAttribute("src");
+                    String itemPrice;
+                    if(listInfo.length != 5){
+                        itemPrice = listInfo[5].split(" ")[0];
+                    }else{
+                        itemPrice = listInfo[3].split(" ")[0];
                     }
+                    String itemWeight = listInfo[2];
 
-                    String itemName = spanName.getText();
-                    String info = pInfo.getText();
-                    String imageUrl = imgImg.getAttribute("src");
-                    String itemPrice = divPrice == null ? "0.0" : divPrice.getText().split(" ")[0];
-                    String itemWeight = divWeight == null ? "0.0" : divWeight.getText();
+                    Connection connection;
+                    Document doc;
+                    try {
+                        connection = Jsoup.connect(item.findElement(By.cssSelector("a.grocery-item__product-img")).getAttribute("href"));
 
-                    Item itemObject = new Item(itemName, info, itemPrice, itemWeight, imageUrl);
-                    jsonInString.add(itemObject);
+                        //set user agent to Google Chrome
+                        connection.userAgent("Mozilla/5.0");
 
+                         // set timeout to 10 seconds
+                        connection.timeout(10 * 1000);
+
+                        // get the HTML document
+                        doc = connection.get();
+
+                        String desc = doc.selectFirst("div.product__description-details").text();
+                        Element ingredientsEle = doc.selectFirst("div.product__ingredients-allergens-details");
+                        Element infoNutriEle = doc.selectFirst(".Nutrition-tixjv9-0");
+
+                        String ingredients = ingredientsEle == null ? "" : ingredientsEle.text();
+                        String infoNutri = infoNutriEle == null ? "" : infoNutriEle.text();
+
+                        Item itemObject = new Item(itemName, info, itemPrice, itemWeight, imageUrl, desc, ingredients, 
+                                infoNutri);
+                        jsonInString.add(itemObject);
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
                 this._jsonInString = jsonInString;
             }

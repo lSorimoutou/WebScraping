@@ -1,12 +1,12 @@
 package lenaickSorimoutou;
 
-import java.io.FileOutputStream;
 // java librairy
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.io.FileOutputStream;
 
 //Gson
 import com.google.gson.GsonBuilder;
@@ -25,13 +25,21 @@ import org.jsoup.nodes.Document;
 import org.jsoup.Connection;
 import org.jsoup.nodes.Element;
 
+/**
+ * The Scrapper class scrape the webpage (monoprix)
+ */
 public class Scrapper {
 
     private java.util.List<Item> _jsonInString;
 
-    Scrapper(String prod) throws InterruptedException{
+    /**
+     * 
+     * @param produit the name of the product
+     * @throws InterruptedException
+     */
+    Scrapper(String produit) throws InterruptedException{
 
-        final String searchQuery = prod;
+        final String searchQuery = produit;
         String searchUrl = "";
 
         try {
@@ -128,6 +136,10 @@ public class Scrapper {
         driver.close();
     }
 
+    /**
+     * 
+     * @param path the path of the file
+     */
     public void writeFile(String path){
         // Convert java objects to File
         try (Writer writer = new OutputStreamWriter(
@@ -141,6 +153,10 @@ public class Scrapper {
         }
     }
 
+    /**
+     * 
+     * @return a json file (String) or the string "Nothing"
+     */
     public String getString(){
         // Convert java Objets to Json 
         if(this._jsonInString != null){

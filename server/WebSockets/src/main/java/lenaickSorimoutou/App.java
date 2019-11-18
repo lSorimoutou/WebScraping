@@ -1,8 +1,9 @@
 package lenaickSorimoutou;
 
 import java.io.IOException;
+
 /**
- * Hello world!
+ * App class is the main class
  *
  */
 public class App {
@@ -40,6 +41,11 @@ public class App {
         
     }
 
+    /**
+     * 
+     * @param args
+     * @throws IOException
+     */
     public static void main(String[] args) throws IOException {
 
         java.util.Map<String, Object> user_properties = new java.util.HashMap<String, Object>();

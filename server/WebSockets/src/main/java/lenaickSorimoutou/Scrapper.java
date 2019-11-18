@@ -102,7 +102,7 @@ public class Scrapper {
                     try {
                         connection = Jsoup.connect(item.findElement(By.cssSelector("a.grocery-item__product-img")).getAttribute("href"));
 
-                        //set user agent to Google Chrome
+                        //set user agent 
                         connection.userAgent("Mozilla/5.0");
 
                          // set timeout to 10 seconds

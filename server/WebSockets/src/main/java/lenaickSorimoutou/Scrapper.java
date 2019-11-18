@@ -31,7 +31,7 @@ public class Scrapper {
 
     Scrapper(String prod) throws InterruptedException{
 
-        String searchQuery = prod;
+        final String searchQuery = prod;
         String searchUrl = "";
 
         try {
@@ -53,8 +53,7 @@ public class Scrapper {
         driver.navigate().to(searchUrl);
 
         // search the number of goods
-        String nbArticleXpath = "div.catalog-page__statistic";
-        String nbArt = driver.findElement(By.cssSelector(nbArticleXpath)).getText();
+        String nbArt = driver.findElement(By.cssSelector("div.catalog-page__statistic")).getText();
 
         if(!nbArt.equals("0 Articles")){
             String itemXpath = "div.cards:nth-child(1)>*";

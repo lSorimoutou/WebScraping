@@ -50,10 +50,11 @@ public class App {
 
         try {
             server.start();
-            // The Web page is launched from Java:         
+            // The Web page is launched from Java:       
             java.io.BufferedReader reader = new java.io.BufferedReader(new java.io.InputStreamReader(System.in));
             System.out.println("Please press a key to stop the server...");
             reader.readLine();
+            
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

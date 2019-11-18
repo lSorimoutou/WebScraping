@@ -230,7 +230,7 @@ export default function CRPage() {
                                 </Grid>
                                 <Grid item xs={6}>
                                     <SyntaxHighlighter language="java" style={tomorrow} showLineNumbers>
-                                        {`// search the number of goods\nString nbArticleXpath = ".//div[@class='catalog-page__statistic']";\nString nbArt = driver.findElement(By.xpath(nbArticleXpath)).getText();`}
+                                        {`// search the number of goods\nString nbArt = driver.findElement(By.cssSelector("div.catalog-page__statistic")).getText();`}
                                     </SyntaxHighlighter>
                                 </Grid>
                             </Grid>
@@ -262,7 +262,82 @@ export default function CRPage() {
                                     </SyntaxHighlighter>
                                 </Grid>
                             </Grid>
-                            <h5>B.	UTILISATION DE GSONBUILDER</h5>
+                            <h6>b) Diminué le temps d'éxécution de selenium</h6>
+                            <p>
+                                Selenium est à l'origine une bibliothèque de teste. Elle permet d'automatiser des tâches sur un browser. Elle possède
+                                cependant des méthodes permettant l'extraction de donnée sur certain site. À cause de certains problèmes
+                                comme le "lazy-loading" et la gestion de code par JavaScript, je fus obligé d'utiliser cette bibliothèque capable
+                                de gérer le Javascript de la page (contrairement à Jsoup que nous verrons plus tard).
+                            </p>
+                            <p>
+                                Selenium est très lent, il faut attendre dans la premier temps le chargement de la page à l'état 
+                                "complete". Puis, il faut scroller la page vers le bas (pour résoudre le problème du "lazy-loading" des images). 
+                                Il était donc important de trouver un moyen d'optimiser l'application. Pour rendre selenium plus rapide, 
+                                commencé par utiliser des selecteurs rapide. En effet, selenium donne la possibilité d'utiliser différent 
+                                type de selecteurs (trier par leur vitesse) :
+                                <ul>
+                                    <li>
+                                        <stong>ID selector</stong>
+                                        <p>
+                                            C'est le sélecteur le plus rapide de selenium, il utilise le 
+                                             <SyntaxHighlighter language="js" style={tomorrow} showLineNumbers>
+                                                {`document.getElementById() `}
+                                            </SyntaxHighlighter>
+                                            de JavaScript.
+                                        </p>
+                                    </li>
+                                    <li>
+                                        <stong>NAME selector</stong>
+                                        <p>
+                                           Il fonctionne si l'élément à un attribut NAME
+                                        </p>
+                                    </li>
+                                    <li>
+                                        <stong>Css selector</stong>
+                                        <p>
+                                            Selector le plus souvent utilisé dans l'application web. 
+                                        </p>
+                                    </li>
+                                    <li>
+                                        <stong>XPATH selector</stong>
+                                        <p>
+                                            Le selecteur XPAH est le selecteur le plus simple a utilisé, mais aussi le plus lent. 
+                                        </p>
+                                    </li>
+                                </ul>
+                            </p>
+                            <h5>B.	UTILISATION DE JSOUP</h5>
+                            <p>
+                                Dans l'application, on utilise JSOUP afin d'aller chercher la description, les informations nutritionnels.
+                                Pour chaque produit qu'on trouve (avec selenium), on se rend sur la page du produit avec JSOUP pour prendre
+                                les informations dont nous avons besoin. 
+
+                                On utilise plutôt JSOUP que selenium car sur cette page, on n'a pas besoin de JavaScript. 
+                                <SyntaxHighlighter language="java" style={tomorrow} showLineNumbers>
+                                    {`connection = Jsoup.connect(item.findElement(By.cssSelector("a.grocery-item__product-img")).getAttribute("href"));
+
+//set user agent 
+connection.userAgent("Mozilla/5.0");
+
+ // set timeout to 10 seconds
+connection.timeout(10 * 1000);
+
+// get the HTML document
+doc = connection.get();
+
+String desc = doc.selectFirst("div.product__description-details").text();
+Element ingredientsEle = doc.selectFirst("div.product__ingredients-allergens-details");
+                        Element infoNutriEle = doc.selectFirst(".Nutrition-tixjv9-0");
+
+String ingredients = ingredientsEle == null ? "" : ingredientsEle.text();
+String infoNutri = infoNutriEle == null ? "" : infoNutriEle.text();
+
+Item itemObject = new Item(itemName, info, itemPrice, itemWeight, imageUrl, desc, ingredients, 
+                                infoNutri);
+jsonInString.add(itemObject);`}
+                                </SyntaxHighlighter>
+                            </p>
+                            <h5>C.	UTILISATION DE GSONBUILDER</h5>
                             <p>
                                 Les données sont envoyées à JavaScript sous le format Json.
                                 Pour convertir un objet java au format JSON,
@@ -284,7 +359,11 @@ export default function CRPage() {
                                 </Grid>
                                 <Grid item xs={6}>
                                     <SyntaxHighlighter language="java" style={tomorrow} showLineNumbers>
-                                        {`public String getString(){
+                                        {`/**
+* 
+* @return a json file (String) or the string "Nothing"
+*/
+public String getString(){
     // Convert java Objets to Json 
     if(this._jsonInString != null){
         final GsonBuilder builder = new GsonBuilder();
@@ -294,11 +373,13 @@ export default function CRPage() {
     }
     else {
         return "Nothing";
-    }     
+    }
+        
 }`}
                                     </SyntaxHighlighter>
                                 </Grid>
                             </Grid>
+                            
                             <hr />
                         </section>
                         <section id="3">
@@ -311,6 +392,8 @@ export default function CRPage() {
                                 <li>Le poids du produit</li>
                                 <li>La photo du produit</li>
                                 <li>La marque du produit </li>
+                                <li>Les ingrédients </li>
+                                <li>La valeur énergétique </li>
                             </ul>
                             <hr />
                         </section>
@@ -335,6 +418,7 @@ export default function CRPage() {
                                 <li>1min30 : Lazy loading (informatique et web) <br /> <a href="https://www.1min30.com/dictionnaire-du-web/lazy-loading-informatique-et-web">https://www.1min30.com/dictionnaire-du-web/lazy-loading-informatique-et-web/</a></li>
                                 <li>GsonBuilder : java doc de GsonBuilder <br /> <a href="https://static.javadoc.io/com.google.code.gson/gson/2.8.5/com/google/gson/GsonBuilder.html">https://static.javadoc.io/com.google.code.gson/gson/2.8.5/com/google/gson/GsonBuilder.html</a></li>
                                 <li>Gson : java doc de Gson <br /> <a href="https://static.javadoc.io/com.google.code.gson/gson/2.8.5/com/google/gson/Gson.html">https://static.javadoc.io/com.google.code.gson/gson/2.8.5/com/google/gson/Gson.html</a></li>
+                                <li>Jsoup : java doc de Jsoup <br /> <a href="https://jsoup.org/apidocs/overview-summary.html">https://jsoup.org/apidocs/overview-summary.html</a></li>
                             </ul>
                             <hr />
                         </section>

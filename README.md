@@ -18,8 +18,9 @@ Le projet consiste à fabriquer une application de Web scraping sur un site de e
 - Front-end : 
 
 1. Ouvrir le dossier "client" avec un terminal. 
-2. Exécuter la commande : `npm start`
-3. Une page s'ouvrira en localhost. 
+2. Installer les dépendances avec la commande : `npm install`
+3. Exécuter la commande : `npm start`
+4. Une page s'ouvrira en localhost. 
 
 - Back-end :
 

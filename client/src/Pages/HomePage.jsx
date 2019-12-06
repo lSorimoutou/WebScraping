@@ -22,7 +22,7 @@ export default class HomePage extends React.Component{
                                 <Grid item ><CircularProgress disableShrink /></Grid>
                             </Grid>
                             :
-                            <Produits data={this.props.data} />
+                            <Produits data={this.props.data} product={this.props.product} />
 
                     }    
             </div>

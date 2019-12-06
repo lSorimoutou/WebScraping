@@ -60,8 +60,8 @@ export default function RecipeReviewCard(props) {
                 title={props.name}
             />
             <CardContent>
-                <Typography variant="h5" color="error" component="P" align='center'>
-                    {props.price + "€"}
+                <Typography variant="h5" color="error" component="p" align='center'>
+                    {(props.price !== "")? props.price + "€" : ""}
                 </Typography>
             </CardContent>
 
@@ -79,12 +79,20 @@ export default function RecipeReviewCard(props) {
             </CardActions>
             <Collapse in={expanded} timeout="auto" unmountOnExit>
                 <CardContent>
-                    <Typography variant="h6">Description</Typography>
-                    <Typography variant="p" paragraph='true'>{props.desc}</Typography>
-                    <Typography variant="h6">Ingrédients</Typography>
-                    <Typography variant="p" paragraph='true'>{props.ingredients}</Typography>
-                    <Typography variant="h6">INFORMATIONS NUTRITIONNELLES</Typography>
-                    <Typography variant="p" paragraph='true'>{props.infoNutri}</Typography>
+                    {(props.desc !== "") ? (<div><Typography className="titleCard" variant="h6">Description</Typography>
+                        <Typography variant="body1" paragraph={true}>{props.desc}</Typography></div>)
+                    : ""
+                    }
+                    {(props.ingredients !== "") ? (<div> <Typography variant="h6" className="titleCard">Ingrédients</Typography>
+                        <Typography variant="body1" paragraph={true}>{props.ingredients}</Typography></div>)
+                        : ""
+                    }
+                    {(props.infoNutri !== "") ? (<div> <Typography variant="h6" className="titleCard">INFORMATIONS NUTRITIONNELLES</Typography>
+                        <Typography variant="body1" paragraph={true}>{props.infoNutri}</Typography></div>)
+                        : ""
+                    } 
+                   
+                    
                 </CardContent>
             </Collapse>
         </Card>

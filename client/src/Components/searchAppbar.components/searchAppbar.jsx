@@ -13,6 +13,8 @@ import SearchIcon from '@material-ui/icons/Search';
 import Button from '@material-ui/core/Button';
 import GitHubIcon from '@material-ui/icons/GitHub';
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHome, faFile } from "@fortawesome/free-solid-svg-icons";
 
 import './searchAppbar.scss';
 
@@ -94,8 +96,8 @@ export default function SearchAppBar(props) {
                         {props.title}
                     </Typography>
                     <ListItemText inset>
-                        <Link  to="/"><Button color="inherit">ACCUEIL</Button></Link>
-                        <Link to="/CR"><Button color="inherit">COMPTE-RENDU</Button></Link>
+                        <Link  to="/"><Button color="inherit"><FontAwesomeIcon icon={faHome} />ACCUEIL</Button></Link>
+                        <Link to="/CR"><Button color="inherit"><FontAwesomeIcon icon={faFile} />COMPTE-RENDU</Button></Link>
                     </ListItemText>
                     <ListItemText inset>
                         <div className={classes.search}>

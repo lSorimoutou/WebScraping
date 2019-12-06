@@ -7,7 +7,21 @@ import RecipeReviewCard from '../card-produit.components/card-produit.components
 
 export default function Produits(props) {
 
-    const items = props.data;
+    let items = props.data;
+    
+    if (props.product.product!== undefined){
+        let product = props.product.product;
+        items = [{
+            name: product.product_name,
+            url: product.image_front_url,
+            price : "",
+            ingredients: product.ingredients_text,
+            weight: product.quantity,
+            infoNutri: "",
+            desc : "",
+            info: product.categories
+        }]
+    }
     const taille = items.length;
     return(
         <div>

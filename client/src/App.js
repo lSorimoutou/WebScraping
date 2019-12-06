@@ -21,6 +21,7 @@ class App extends Component {
       produit: "",
       data: [],
       loading: false,
+      product : {}
     }
   }
 
@@ -33,36 +34,49 @@ class App extends Component {
   clickSubmit = () => {
 
     const { produit } = this.state;
-    let service = Singleton.getInstance();
-    this.setState({ loading: true });
+    var reg = /^\d{11,14}$/;
+    if (reg.test(produit.trim())){
+      let myInit = {
+        method: 'GET',
+        mode: 'cors',
+        cache: 'default'
+      };
+      fetch('https://world.openfoodfacts.org/api/v0/product/'+produit+'.json', myInit)
+      .then((res) => {return res.json()})
+      .then((json) => {
+        this.setState({ product : json});
+      });
+    } else {
+      let service = Singleton.getInstance();
+      this.setState({ loading: true });
 
-    service.onmessage = (event) => {
-      if (event.data) {
-        if (event.data === "Nothing") {
-          alert("Aucun produit n'a été trouvé !");
-          this.setState({ loading: false });
+      service.onmessage = (event) => {
+        if (event.data) {
+          if (event.data === "Nothing") {
+            alert("Aucun produit n'a été trouvé !");
+            this.setState({ loading: false });
+          }
+          else {
+            this.setState({ data: JSON.parse(event.data) });
+            service.close();
+            this.setState({ loading: false });
+          }
         }
-        else {
-          this.setState({ data: JSON.parse(event.data) });
-          service.close();
-          this.setState({ loading: false });
-        }
+      };
 
+      service.onopen = () => {
+        console.log("service.onopen...");
+        service.send(produit.toLowerCase());
       }
-    };
 
-    service.onopen = () => {
-      console.log("service.onopen...");
-      service.send(produit.toLowerCase());
+      service.onclose = (event/*:CloseEvent*/) => {
+        console.log("service.onclose... " + event.code);
+      };
+
+      service.onerror = () => {
+        window.alert("service.onerror...");
+      };
     }
-
-    service.onclose = (event/*:CloseEvent*/) => {
-      console.log("service.onclose... " + event.code);
-    };
-
-    service.onerror = () => {
-      window.alert("service.onerror...");
-    };
   }
 
   render(){
@@ -70,14 +84,14 @@ class App extends Component {
       <div className="App">
         <Router>
           <SearchAppBar
-            placeholder="Nom du produit"
+            placeholder="Nom du produit/Code Barre"
             onChange={this.handleChange}
             value={this.produit}
             name='produit'
             onClick={this.clickSubmit}
-            title="Web Scraping" />
+            title="Web Scraping." />
           <Switch>
-            <Route exact path='/' component={() => <HomePage data={this.state.data} loading={this.state.loading} />} />
+            <Route exact path='/' component={() => <HomePage data={this.state.data} loading={this.state.loading} product={this.state.product} />} />
             <Route exact path='/CR' component = { () => <CRPage/>}/>
           </Switch>
         </Router>

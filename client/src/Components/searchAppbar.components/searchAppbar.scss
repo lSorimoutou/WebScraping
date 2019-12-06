@@ -1,12 +1,12 @@
 $base-color: #ffff;
-$active-color : #3886c9;
+$active-color : #ffff;
 $hover-color : #438bca;
 a {
     text-decoration: none;
     color: $base-color;
 
     &.active{
-        color: $active-color;
+         color: #000000;
     }
 
     &:hover{
@@ -18,4 +18,84 @@ a {
 h6{
     color: $active-color;
     font-weight: 700!important;
+    text-transform: uppercase;
+
+}
+.titleCard{
+    color: $hover-color;
+}
+
+.MuiButton-root{
+    border-radius: 0px!important;
+}
+.MuiButton-root:hover {
+    text-decoration: none;
+    background-color: #3f51b5!important;
+    color : #fff;
+    border-radius: 0px!important;
+}
+
+.makeStyles-search-5 {
+    width: auto;
+    margin-left: 8px!important;
+    background: #fff!important;
+    position: relative;
+    border-radius: 2px!important;
+    margin-right: 1rem;
+    display: block;
+    max-width: 800px;
+    color: #000;
+
+    &:hover{
+        width: auto;
+        margin-left: 8px;
+        background: #fff!important;
+        position: relative;
+        border-radius: 2px;
+        margin-right: 1rem;
+        display: block;
+        max-width: 800px;
+        color: #000;
+    }
+    
+    .makeStyles-inputInput-8 {
+        width: 100%!important;
+        font-size: 1rem;
+        z-index: 2;
+        cursor: text;
+        border: none;
+        background: 0 0;
+        outline: 0;
+
+    }
+}
+
+.MuiButton-label {
+    svg {
+        padding: 5px 10px;
+        margin-right: 12px !important;
+        background-repeat: no-repeat;
+        display: inline-block;
+        fill: currentColor;
+        height: 24px;
+        width: 24px;  
+        font-size: 20px;
+    }
+
+    font-size: .875rem !important;
+}
+
+.MuiListItem-root {
+    svg {
+        padding: 5px 10px;
+        margin-right: 12px !important;
+        background-repeat: no-repeat;
+        display: inline-block;
+        fill: currentColor;
+        height: 24px;
+        width: 24px;
+        font-size: 20px;
+    }
+
+    font-size: .875rem !important;
 }

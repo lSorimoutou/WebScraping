@@ -11,3 +11,23 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+.MuiButton-label {
+    color: #fff!important;
+}
+
+.MuiButton-label:hover {
+    color: rgb(0, 0, 0)!important;
+}
+
+.modal-content {
+    z-index: 1100;
+}
+
+.makeStyles-appBar-4 {
+    z-index: 1000!important;
+}
+
+.MuiCardMedia-root {
+    cursor: pointer;
+}

@@ -14,7 +14,7 @@ import Button from '@material-ui/core/Button';
 import GitHubIcon from '@material-ui/icons/GitHub';
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHome, faFile } from "@fortawesome/free-solid-svg-icons";
+import { faHome, faFile, faShoppingBasket } from "@fortawesome/free-solid-svg-icons";
 
 import './searchAppbar.scss';
 
@@ -89,50 +89,66 @@ export default function SearchAppBar(props) {
     const classes = useStyles();
 
     return (
-        <div className={classes.root}>
-            <AppBar style={style} position="fixed" className={classes.appBar}>
-                <Toolbar>
-                    <Typography className={classes.title} variant="h6" noWrap>
-                        {props.title}
-                    </Typography>
-                    <ListItemText inset>
-                        <Link  to="/"><Button color="inherit"><FontAwesomeIcon icon={faHome} />ACCUEIL</Button></Link>
-                        <Link to="/CR"><Button color="inherit"><FontAwesomeIcon icon={faFile} />COMPTE-RENDU</Button></Link>
-                    </ListItemText>
-                    <ListItemText inset>
-                        <div className={classes.search}>
-                            <div className={classes.searchIcon}>
-                                <SearchIcon />
-                            </div>
-                            <InputBase
-                                placeholder={props.placeholder}
-                                classes={{
-                                    root: classes.inputRoot,
-                                    input: classes.inputInput,
-                                }}
-                                inputProps={{ 'aria-label': 'search' }}
-                                onChange={props.onChange}
-                                value={props.value}
-                                name={props.name}
-                                onKeyPress={event => {
-                                    if (event.key === 'Enter') {
-                                        props.onClick();
-                                    }
-                                }}
-                            />
-                        </div>
-                    </ListItemText>
-                    <ListItemText inset>
-                        <a href="https://github.com/lSorimoutou/WebScraping">
-                            <Button color="inherit">
-                                GITHUB <GitHubIcon className={classes.githubIcon} />
-                            </Button>
-                        </a>
-                    </ListItemText>
-                </Toolbar>
-            </AppBar>
+      <div className={classes.root}>
+        <AppBar style={style} position="fixed" className={classes.appBar}>
+          <Toolbar>
+            <Typography className={classes.title} variant="h6" noWrap>
+              {props.title}
+            </Typography>
+            <ListItemText inset>
+              <Link to="/">
+                <Button color="inherit">
+                  <FontAwesomeIcon icon={faHome} />
+                  ACCUEIL
+                </Button>
+              </Link>
+              <Link to="/CR">
+                <Button color="inherit">
+                  <FontAwesomeIcon icon={faFile} />
+                  COMPTE-RENDU
+                </Button>
+              </Link>
+              <a href="https://www.monoprix.fr/courses-en-ligne">
+                <Button color="inherit">
+                  <FontAwesomeIcon icon={faShoppingBasket} />
+                  MAGASIN
+                </Button>
+              </a>
+            </ListItemText>
+            <ListItemText inset>
+              <div className={classes.search}>
+                <div className={classes.searchIcon}>
+                  <SearchIcon />
+                </div>
+                <InputBase
+                  placeholder={props.placeholder}
+                  classes={{
+                    root: classes.inputRoot,
+                    input: classes.inputInput
+                  }}
+                  inputProps={{ "aria-label": "search" }}
+                  onChange={props.onChange}
+                  value={props.value}
+                  name={props.name}
+                  onKeyPress={event => {
+                    if (event.key === "Enter") {
+                      props.onClick();
+                    }
+                  }}
+                />
+              </div>
+            </ListItemText>
+            <ListItemText inset>
+              <a href="https://github.com/lSorimoutou/WebScraping">
+                <Button color="inherit">
+                  GITHUB <GitHubIcon className={classes.githubIcon} />
+                </Button>
+              </a>
+            </ListItemText>
+          </Toolbar>
+        </AppBar>
 
-            {props.children}
-        </div>
+        {props.children}
+      </div>
     );
 }

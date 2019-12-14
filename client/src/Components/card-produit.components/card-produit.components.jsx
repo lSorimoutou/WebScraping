@@ -13,6 +13,11 @@ import CardActions from '@material-ui/core/CardActions';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import clsx from 'clsx';
 
+import Modal from "react-bootstrap/Modal";
+import Button from "react-bootstrap/Button";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 
 const useStyles = makeStyles(theme => ({
     card: {
@@ -39,62 +44,105 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
+function MyVerticallyCenteredModal(props) {
+  return (
+    <Modal
+      {...props}
+      size="lg"
+      aria-labelledby="contained-modal-title-vcenter"
+      centered
+    >
+      <Modal.Header closeButton>
+        <Modal.Title id="contained-modal-title-vcenter">
+          Informations sur le produit
+        </Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <Container>
+          <Row className="justify-content-md-center">
+            <Col xs md="auto">
+              <img src={props.url} alt="img"></img>
+            </Col>
+          </Row>
+          <Row>
+            {props.desc !== "" ? (
+              <div>
+                <Typography className="titleCard" variant="h6">
+                  Description
+                </Typography>
+                <Typography variant="body1" paragraph={true}>
+                  {props.desc}
+                </Typography>
+              </div>
+            ) : (
+              ""
+            )}
+            {props.ingredients !== "" ? (
+              <div>
+                {" "}
+                <Typography variant="h6" className="titleCard">
+                  Ingrédients
+                </Typography>
+                <Typography variant="body1" paragraph={true}>
+                  {props.ingredients}
+                </Typography>
+              </div>
+            ) : (
+              ""
+            )}
+            {props.infoNutri !== "" ? (
+              <div>
+                {" "}
+                <Typography variant="h6" className="titleCard">
+                  INFORMATIONS NUTRITIONNELLES
+                </Typography>
+                <Typography variant="body1" paragraph={true}>
+                  {props.infoNutri}
+                </Typography>
+              </div>
+            ) : (
+              ""
+            )}
+          </Row>
+        </Container>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button onClick={props.onHide}>Close</Button>
+      </Modal.Footer>
+    </Modal>
+  );
+};
+
 
 export default function RecipeReviewCard(props) {
+    const [modalShow, setModalShow] = React.useState(false);
     const classes = useStyles();
-    const [expanded, setExpanded] = React.useState(false);
-
-    const handleExpandClick = () => {
-        setExpanded(!expanded);
-    };
 
     return (
-        <Card className={classes.card}> 
-            <CardHeader
-                title={props.name}
-                subheader={props.info + " " + props.weight}
-            />
-            <CardMedia
-                className={classes.media}
-                image={props.url}
-                title={props.name}
-            />
-            <CardContent>
-                <Typography variant="h5" color="error" component="p" align='center'>
-                    {(props.price !== "")? props.price + "€" : ""}
-                </Typography>
-            </CardContent>
-
-            <CardActions disableSpacing>
-                <IconButton
-                    className={clsx(classes.expand, {
-                        [classes.expandOpen]: expanded,
-                    })}
-                    onClick={handleExpandClick}
-                    aria-expanded={expanded}
-                    aria-label="show more"
-                >
-                    <ExpandMoreIcon />
-                </IconButton>
-            </CardActions>
-            <Collapse in={expanded} timeout="auto" unmountOnExit>
-                <CardContent>
-                    {(props.desc !== "") ? (<div><Typography className="titleCard" variant="h6">Description</Typography>
-                        <Typography variant="body1" paragraph={true}>{props.desc}</Typography></div>)
-                    : ""
-                    }
-                    {(props.ingredients !== "") ? (<div> <Typography variant="h6" className="titleCard">Ingrédients</Typography>
-                        <Typography variant="body1" paragraph={true}>{props.ingredients}</Typography></div>)
-                        : ""
-                    }
-                    {(props.infoNutri !== "") ? (<div> <Typography variant="h6" className="titleCard">INFORMATIONS NUTRITIONNELLES</Typography>
-                        <Typography variant="body1" paragraph={true}>{props.infoNutri}</Typography></div>)
-                        : ""
-                    } 
-                   
-                    
-                </CardContent>
-            </Collapse>
-        </Card>
+      <Card className={classes.card}>
+        <CardHeader
+          title={props.name}
+          subheader={props.info + " " + props.weight}
+        />
+        <CardMedia
+          className={classes.media}
+          image={props.url}
+          title={props.name}
+          onClick={() => setModalShow(true)}
+        />
+        <CardContent>
+          <Typography variant="h5" color="error" component="p" align="center">
+            {props.price !== "" ? props.price + "€" : ""}
+          </Typography>
+        </CardContent>
+        <MyVerticallyCenteredModal
+          desc={props.desc}
+          ingredients={props.ingredients}
+          infoNutri={props.infoNutri}
+          url={props.url}
+          show={modalShow}
+          onHide={() => setModalShow(false)}
+        />
+      </Card>
     );
 }

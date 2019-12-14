@@ -18,6 +18,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.firefox.FirefoxBinary;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 // Jsoup
 import org.jsoup.Jsoup;
@@ -47,8 +49,7 @@ public class Scrapper {
                     + java.net.URLEncoder.encode(searchQuery, "UTF-8") + "/" + java.net.URLEncoder.encode(searchQuery, "UTF-8");
 
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-            ;
+            // e.printStackTrace();
         }
 
         FirefoxBinary firefoxBinary = new FirefoxBinary();
@@ -60,21 +61,39 @@ public class Scrapper {
 
         driver.navigate().to(searchUrl);
 
+
         // search the number of goods
         String nbArt = driver.findElement(By.cssSelector("div.catalog-page__statistic")).getText();
 
         if(!nbArt.equals("0 Articles")){
             String itemXpath = "div.cards:nth-child(1)>*";
-        
-            // Scroll down to the bottom of the page (for lazzy loading of img)
-            for (int i = 0; i < 3000; i = i + 500) {
+
+            String[] arrOfStr = nbArt.split(" ");
+            int nbProduct = Integer.parseInt(arrOfStr[0]);
+
+            int n = 0;
+            int card = 0;
+            // Scroll to the bottom of the page for upload new product.
+            while (card < nbProduct) {
+                JavascriptExecutor jse = (JavascriptExecutor) driver;
+                n += 2400;
+                card += 25;
+                if(card > nbProduct){
+                    card = nbProduct;
+                }
+                jse.executeScript("window.scrollTo(0," + n + " )");
+                WebDriverWait wait = new WebDriverWait(driver, 10 * 1000);
+                wait.until(ExpectedConditions
+                        .visibilityOfElementLocated(By.cssSelector("div.grocery-item:nth-child(" + card + ")")));
+            }
+
+            // Scroll down to the bottom of the page (for lazy loading of img)
+            for (int i = 500; i < 2400 * ((nbProduct / 25) +1); i = i + 500) {
                 JavascriptExecutor jse = (JavascriptExecutor)driver;
-                jse.executeScript("window.scrollTo(0," + i + " )");
-                // Wait to load the scrolled page
+                jse.executeScript("window.scrollTo("+ (i - 500) + "," + i + " )");
             }
             
             java.util.List<WebElement> items = driver.findElements(By.cssSelector(itemXpath));
-
             if (items.isEmpty()) {
                 System.out.println("No items found !");
             } else {
@@ -105,8 +124,8 @@ public class Scrapper {
                         //set user agent 
                         connection.userAgent("Mozilla/5.0");
 
-                         // set timeout to 10 seconds
-                        connection.timeout(10 * 1000);
+                         // set timeout to 7 seconds
+                        connection.timeout(7 * 1000);
 
                         // get the HTML document
                         doc = connection.get();
@@ -121,7 +140,6 @@ public class Scrapper {
                         Item itemObject = new Item(itemName, info, itemPrice, itemWeight, imageUrl, desc, ingredients, 
                                 infoNutri);
                         jsonInString.add(itemObject);
-
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -133,7 +151,7 @@ public class Scrapper {
             this._jsonInString = null;
         }
         // close the browser
-        driver.close();
+        driver.quit();
     }
 
     /**

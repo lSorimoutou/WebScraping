@@ -5,13 +5,8 @@ import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
-import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import { red } from '@material-ui/core/colors';
-import Collapse from '@material-ui/core/Collapse';
-import CardActions from '@material-ui/core/CardActions';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import clsx from 'clsx';
 
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
@@ -60,49 +55,49 @@ function MyVerticallyCenteredModal(props) {
       <Modal.Body>
         <Container>
           <Row className="justify-content-md-center">
-            <Col xs md="auto">
-              <img src={props.url} alt="img"></img>
+            <Col xs md="5">
+              <img src={props.url} className="card-img" alt="img"></img>
             </Col>
-          </Row>
-          <Row>
-            {props.desc !== "" ? (
-              <div>
-                <Typography className="titleCard" variant="h6">
-                  Description
-                </Typography>
-                <Typography variant="body1" paragraph={true}>
-                  {props.desc}
-                </Typography>
-              </div>
-            ) : (
-              ""
-            )}
-            {props.ingredients !== "" ? (
-              <div>
-                {" "}
-                <Typography variant="h6" className="titleCard">
-                  Ingrédients
-                </Typography>
-                <Typography variant="body1" paragraph={true}>
-                  {props.ingredients}
-                </Typography>
-              </div>
-            ) : (
-              ""
-            )}
-            {props.infoNutri !== "" ? (
-              <div>
-                {" "}
-                <Typography variant="h6" className="titleCard">
-                  INFORMATIONS NUTRITIONNELLES
-                </Typography>
-                <Typography variant="body1" paragraph={true}>
-                  {props.infoNutri}
-                </Typography>
-              </div>
-            ) : (
-              ""
-            )}
+            <Col md="7">
+              {props.desc !== "" ? (
+                <div>
+                  <h6 className="card-title">
+                    Description
+                  </h6>
+                  <p className="card-paragraph">
+                    {props.desc}
+                  </p>
+                </div>
+              ) : (
+                  ""
+                )}
+              {props.ingredients !== "" ? (
+                <div>
+                  {" "}
+                  <h6 className="card-title">
+                    Ingrédients
+                </h6>
+                  <p className="card-paragraph">
+                    {props.ingredients}
+                  </p>
+                </div>
+              ) : (
+                  ""
+                )}
+              {props.infoNutri !== "" ? (
+                <div>
+                  {" "}
+                  <h6 className="card-title">
+                    INFORMATIONS NUTRITIONNELLES
+                </h6>
+                  <p className="card-paragraph">
+                    {props.infoNutri}
+                  </p>
+                </div>
+              ) : (
+                  ""
+                )}
+            </Col>
           </Row>
         </Container>
       </Modal.Body>

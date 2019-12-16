@@ -25,9 +25,25 @@ code {
 }
 
 .makeStyles-appBar-4 {
-    z-index: 1000!important;
+    z-index: 2000!important;
 }
 
 .MuiCardMedia-root {
     cursor: pointer;
+}
+
+h6.card-title {
+  color: #000000;
+}
+
+p.card-paragraph {
+  font-size: 12px;
+}
+
+img.card-img{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50%;
 }

@@ -5,6 +5,7 @@ import RecipeReviewCard from '../card-produit.components/card-produit.components
 
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
+import CardDeck from 'react-bootstrap/CardDeck';
 
 export default function Produits(props) {
 
@@ -16,6 +17,7 @@ export default function Produits(props) {
             name: product.product_name,
             url: product.image_front_url,
             price : "",
+            priceUnit : "",
             ingredients: product.ingredients_text,
             weight: product.quantity,
             infoNutri: "",
@@ -43,9 +45,9 @@ export default function Produits(props) {
               alignItems="center"
             >
               {items.map((item, index) => (
-                <Grid item xs={6} sm={3} key={index}>
+                <CardDeck >
                   <RecipeReviewCard {...item} key={index} />
-                </Grid>
+                </CardDeck>
               ))}
             </Grid>
           </Row>

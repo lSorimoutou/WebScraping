@@ -25,6 +25,6 @@ Le projet consiste à fabriquer une application de Web scraping sur un site de e
 - Back-end :
 
 1. Ouvrir le dossier server/WebSockets avec un terminal. 
-2. Exécuter la commande : `java -jar target/WebSockets-1.0-SNAPSHOT-jar-with-dependencies.jar` 
+2. Exécuter la commande : `java -jar server.jar` 
 
 Maintenant vous pouvez essayer l'application web.

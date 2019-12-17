@@ -9,8 +9,9 @@ public class Item {
     private String desc;
     private String ingredients;
     private String infoNutri;
+    private String priceUnit;
 
-    Item(String name, String info, String price, String weight, String url, String desc, String ingredients, String infoNutri){
+    Item(String name, String info, String price, String weight, String url, String desc, String ingredients, String infoNutri, String priceUnit){
         this.name = name;
         this.info = info;
         this.price = price; 
@@ -19,6 +20,7 @@ public class Item {
         this.desc = desc;
         this.ingredients = ingredients;
         this.infoNutri = infoNutri;
+        this.priceUnit = priceUnit;
     }
 
     public String getName(){

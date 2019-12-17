@@ -26,6 +26,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.Connection;
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 /**
  * The Scrapper class scrape the webpage (monoprix)
@@ -98,34 +99,32 @@ public class Scrapper {
                 System.out.println("No items found !");
             } else {
                 // data mining
+                String htmlWithJs = driver.findElementByCssSelector("div.cards:nth-child(1)").getAttribute("innerHTML");
+
+                Document doc1 = Jsoup.parse(htmlWithJs);
                 java.util.List<Item> jsonInString = new ArrayList<Item>();
 
-                for (WebElement item : items) {
-                    
-                    String infoArticle = item.getText();
-                    String listInfo[] = infoArticle.split("\n");
+                Elements produits = doc1.select("div.grocery-item");
 
-                    String itemName = listInfo[1];
-                    String info = listInfo[0];
-                    String imageUrl = item.findElement(By.tagName("img")).getAttribute("src");
-                    String itemPrice;
-                    if(listInfo.length != 5){
-                        itemPrice = listInfo[5].split(" ")[0];
-                    }else{
-                        itemPrice = listInfo[3].split(" ")[0];
-                    }
-                    String itemWeight = listInfo[2];
+                for (Element prod : produits) {
+
+                    String itemName = prod.select("div.grocery-item-range").text();
+                    String info = prod.select("div.conditioning-description").text();
+                    String imageUrl = prod.selectFirst("img").attr("src");
+                    String itemPrice = prod.select("div.grocery-item__normal-price").text();
+                    String itemWeight = prod.select("div.conditioning-description").text();
+                    String itemPriceUnit = prod.select("div.grocery-item__price-unit").text();
 
                     Connection connection;
                     Document doc;
-                    try {
-                        connection = Jsoup.connect(item.findElement(By.cssSelector("a.grocery-item__product-img")).getAttribute("href"));
+                    try {                     
+                        connection = Jsoup.connect("https://www.monoprix.fr" + prod.select("a.grocery-item__product-img").attr("href"));
 
                         //set user agent 
                         connection.userAgent("Mozilla/5.0");
 
-                         // set timeout to 7 seconds
-                        connection.timeout(7 * 1000);
+                         // set timeout to 5 seconds
+                        connection.timeout(5 * 1000);
 
                         // get the HTML document
                         doc = connection.get();
@@ -138,10 +137,9 @@ public class Scrapper {
                         String infoNutri = infoNutriEle == null ? "" : infoNutriEle.text();
 
                         Item itemObject = new Item(itemName, info, itemPrice, itemWeight, imageUrl, desc, ingredients, 
-                                infoNutri);
+                                infoNutri, itemPriceUnit);
                         jsonInString.add(itemObject);
                     } catch (IOException e) {
-                        e.printStackTrace();
                     }
                 }
                 this._jsonInString = jsonInString;

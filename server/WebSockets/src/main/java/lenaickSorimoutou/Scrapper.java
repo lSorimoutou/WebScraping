@@ -68,19 +68,19 @@ public class Scrapper {
 
         if(!nbArt.equals("0 Articles")){
             String itemXpath = "div.cards:nth-child(1)>*";
-
             String[] arrOfStr = nbArt.split(" ");
             int nbProduct = Integer.parseInt(arrOfStr[0]);
-
             int n = 0;
             int card = 0;
+            final int MAX_PRODUCT = 96;
+
             // Scroll to the bottom of the page for upload new product.
-            while (card < nbProduct) {
+            while (card < nbProduct && card < MAX_PRODUCT-24) {
                 JavascriptExecutor jse = (JavascriptExecutor) driver;
                 n += 2400;
                 card += 25;
                 if(card > nbProduct){
-                    card = nbProduct;
+                    card = (nbProduct >= MAX_PRODUCT)? MAX_PRODUCT : nbProduct;
                 }
                 jse.executeScript("window.scrollTo(0," + n + " )");
                 WebDriverWait wait = new WebDriverWait(driver, 10 * 1000);
@@ -89,7 +89,7 @@ public class Scrapper {
             }
 
             // Scroll down to the bottom of the page (for lazy loading of img)
-            for (int i = 500; i < 2400 * ((nbProduct / 25) +1); i = i + 500) {
+            for (int i = 500; i < 2400 * ((card / 25) +1); i = i + 500) {
                 JavascriptExecutor jse = (JavascriptExecutor)driver;
                 jse.executeScript("window.scrollTo("+ (i - 500) + "," + i + " )");
             }
@@ -97,10 +97,14 @@ public class Scrapper {
             java.util.List<WebElement> items = driver.findElements(By.cssSelector(itemXpath));
             if (items.isEmpty()) {
                 System.out.println("No items found !");
+
+                // close the browser
+                driver.quit();
             } else {
                 // data mining
                 String htmlWithJs = driver.findElementByCssSelector("div.cards:nth-child(1)").getAttribute("innerHTML");
-
+                // close the browser
+                driver.quit();
                 Document doc1 = Jsoup.parse(htmlWithJs);
                 java.util.List<Item> jsonInString = new ArrayList<Item>();
 
@@ -123,9 +127,6 @@ public class Scrapper {
                         //set user agent 
                         connection.userAgent("Mozilla/5.0");
 
-                         // set timeout to 5 seconds
-                        connection.timeout(5 * 1000);
-
                         // get the HTML document
                         doc = connection.get();
 
@@ -147,9 +148,9 @@ public class Scrapper {
         }
         else{
             this._jsonInString = null;
+            // close the browser
+            driver.quit();
         }
-        // close the browser
-        driver.quit();
     }
 
     /**

@@ -81,10 +81,10 @@ function MyVerticallyCenteredModal(props) {
 
 export default function RecipeReviewCard(props) {
     const [modalShow, setModalShow] = React.useState(false);
-
+    const regexSVG = /svg/;
     return (
       <Card style={{ width: '18rem', height:'440px' }}>
-        <Card.Img variant="top" src={props.url !== "/contents/images/cart_icon.svg" ? props.url.replace("Small_Grocery", "High_Grocery") : noImg} onClick={() => setModalShow(true)}/>
+        <Card.Img variant="top" src={(!regexSVG.test(props.url)) ? props.url.replace("Small_Grocery", "High_Grocery") : noImg} onClick={() => setModalShow(true)}/>
         <Card.Body>
           <Card.Title onClick={() => setModalShow(true)}>{props.name}</Card.Title>
           <Card.Text>

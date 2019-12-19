@@ -28,67 +28,127 @@ code {
     z-index: 1000!important;
 }
 
-.card-img-top {
-    cursor: pointer;
-    margin: auto;
-    height: 170px!important;
-    width: 170px!important;
-}
 
-.card-text {
-  color:rgb(153, 153, 153);
-  font-size: 12px;
-  padding-bottom: 100px;
-}
-
-.card-title{
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  color:
-  rgb(48, 48, 48);
-  overflow: hidden;
-  font-size: 14px;
-}
-
-.card-paragraph{
-  font-size: 12px;
-}
-img.card-img{
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 328px;
-  height: 328px;
-}
-
-.modal-body{
-  padding: 80px 0px !important;
-}
-
-.price{
-  text-align: right;
-  font-size: 20px;
-  font-weight: 600;
-  margin: 3px 0px;
-  color: #000000;
-}
-
-p.taille {
-  padding-bottom: 25px!important;
-  font-weight: bold;
-}
-
-.MuiPaper-root {
-    z-index: 100;
-}
-
-.card-deck {
-    margin-left: 0px!important;
-    margin-bottom: 25px;
-}
 
 .priceUnit {
   color:rgb(153, 153, 153);
   font-size: 12px;
+}
+
+/* Position and sizing of burger button */
+.bm-burger-button {
+  position: fixed;
+  width: 36px;
+  height: 30px;
+  left: 36px;
+  top: 36px;
+}
+
+/* Color/shape of burger icon bars */
+.bm-burger-bars {
+  background: #373a47;
+}
+
+
+/* Position and sizing of clickable cross button */
+.bm-cross-button {
+  height: 24px;
+  width: 24px;
+}
+
+/* Color/shape of close button cross */
+.bm-cross {
+  background: #bdc3c7;
+}
+
+/*
+Sidebar wrapper styles
+Note: Beware of modifying this element as it can break the animations - you should not need to touch it in most cases
+*/
+.bm-menu-wrap {
+  position: fixed;
+  height: 100%;
+  top: 0;
+}
+
+/* General sidebar styles */
+.bm-menu {
+  background: #373a47;
+  padding: 2.5em 1.5em 0;
+  font-size: 1.15em;
+}
+
+/* Morph shape necessary with bubble or elastic */
+.bm-morph-shape {
+  fill: #373a47;
+}
+
+/* Wrapper for item list */
+.bm-item-list {
+  color: #b8b7ad;
+  padding: 0.8em;
+}
+
+/* Individual item */
+.bm-item {
+  display: inline-block;
+
+  /* Our sidebar item styling */
+  text-decoration: none;
+  margin-bottom: 10px;
+  color: #d1d1d1;
+  transition: color 0.2s;
+  cursor: pointer;
+}
+
+/* Change color on hover */
+.bm-item:hover {
+  color: #c94e50!important;
+}
+
+/* Styling of overlay */
+.bm-overlay {
+  background: rgba(0, 0, 0, 0.3);
+  top: 0;
+}
+
+.bm-burger-button {
+  top: 100px!important;
+  left: 40px!important;
+}
+
+#page-wrap{
+  margin-top: 80px;
+}
+
+.menu-item svg {
+    font-size: 1.7em;
+    vertical-align: middle;
+    color: #282a35;
+}
+
+.bm-item-list span{
+    margin-left: 10px;
+    font-weight: 700;
+}
+
+.bm-menu a {
+    color: #b8b7ad;
+    font-size: 15px;
+    padding: 1em;
+}
+
+.bm-menu {
+
+    padding: 3.7em 0.1em 0;;
+
+}
+
+.bm-item.active span {
+    color: #c94e50!important;
+}
+.Diag{
+  display: block;
+  margin-left: auto;
+  margin-right: auto 
 }

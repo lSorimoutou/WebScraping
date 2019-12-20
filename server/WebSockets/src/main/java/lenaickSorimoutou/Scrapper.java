@@ -72,7 +72,7 @@ public class Scrapper {
             int nbProduct = Integer.parseInt(arrOfStr[0]);
             int n = 0;
             int card = 0;
-            final int MAX_PRODUCT = 96;
+            final int MAX_PRODUCT = 72;
 
             // Scroll to the bottom of the page for upload new product.
             while (card < nbProduct && card < MAX_PRODUCT-24) {
@@ -98,15 +98,15 @@ public class Scrapper {
             if (items.isEmpty()) {
                 System.out.println("No items found !");
 
-                // close the browser
+                // close selenium the browser
                 driver.quit();
             } else {
                 // data mining
                 String htmlWithJs = driver.findElementByCssSelector("div.cards:nth-child(1)").getAttribute("innerHTML");
-                // close the browser
+                // close selenium the browser
                 driver.quit();
                 Document doc1 = Jsoup.parse(htmlWithJs);
-                java.util.List<Item> jsonInString = new ArrayList<Item>();
+                java.util.List<Item> jsonInString = new ArrayList<>();
 
                 Elements produits = doc1.select("div.grocery-item");
 
@@ -148,7 +148,7 @@ public class Scrapper {
         }
         else{
             this._jsonInString = null;
-            // close the browser
+            // close selenium the browser
             driver.quit();
         }
     }

@@ -517,6 +517,8 @@ public String getString(){
                     code-barre+ ".json".
                     <br />
                     Afin de récupérer les informations du produit au format json.
+                    Les informations sont extraites de la base de données d'Open
+                    Food facts.
                   </p>
                 </section>
                 <section id="4">

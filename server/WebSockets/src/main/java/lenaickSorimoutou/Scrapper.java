@@ -113,7 +113,7 @@ public class Scrapper {
                 for (Element prod : produits) {
 
                     String itemName = prod.select("div.grocery-item-range").text();
-                    String info = prod.select("div.conditioning-description").text();
+                    String info = prod.select("div.grocery-item-brand").text();
                     String imageUrl = prod.selectFirst("img").attr("src");
                     String itemPrice = prod.select("div.grocery-item__normal-price").text();
                     String itemWeight = prod.select("div.conditioning-description").text();

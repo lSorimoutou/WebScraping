@@ -42,7 +42,7 @@ export default class CRPage extends React.Component {
             },
             { title: "II.Choix mise en oeuvre ", icon: faCheckSquare },
             { title: "III.Les données récupérer ", icon: faCaretSquareUp },
-            { title: "IV. Limites du projet", icon: faWindowClose},
+            { title: "IV. Limites du projet", icon: faWindowClose },
             { title: "V.Sources", icon: faBookmark }
           ].map((obj, index) => (
             <Link
@@ -91,17 +91,18 @@ export default class CRPage extends React.Component {
                     class="hr-text"
                   ></hr>
                   <p>
-                    La conception de l'application web a été réalisé avec deux
+                    La conception de l'application web a été réalisé avec divers
                     langages de programmation. L'affichage a été réalisé avec{" "}
-                    <strong>HTML, SASS et JavaScript.</strong>
+                    <strong>HTML, SASS et JavaScript. </strong>
                     Le Web Scraping est réalisé avec <strong>Java</strong>. La
-                    liaison entre les deux langages de programmation se fait via
-                    un WebSocket.
+                    liaison entre les deux langages de programmation se fait via Tyrus,
+                    une java API open source pour les WebSockets.
                   </p>
                   <p>
                     Pour débuter la recherche de produit, on utilise la barre de
                     recherche sur la page web. Après avoir validé la recherche,
                     le nom du produit entré sera envoyé à l'api Java.
+                    {" "}<strong>Pour pouvoir accéder aux informations d'un produit </strong>vous devez cliquer sur la photo du produit.
                   </p>
                   <p>
                     Le web scraping se fait avec les bibliothèques{" "}
@@ -285,8 +286,8 @@ export default class CRPage extends React.Component {
                   <h5>B. WEBSCRAPING AVEC SELENIUM</h5>
                   <p>
                     Le web Scraping est réalisé dans la partie Java par le biais
-                    de la bibliothèque Selenium.
-                    <strong>Selenium</strong> est un framework de test
+                    de la bibliothèque Selenium. 
+                    Il s'agit d'un framework de test
                     informatique développée en Java pour le test automatisé
                     d'applications Web. Mais, nous pouvons aussi l'utiliser pour
                     faire du Web Scraping. Effectivement, il est possible de
@@ -317,6 +318,11 @@ export default class CRPage extends React.Component {
                       </SyntaxHighlighter>
                     </Grid>
                   </Grid>
+                  <p>
+                    Dans notre projet, nous allons simplement utiliser
+                    le framework pour exécuté les scripts JavaScript de la page
+                    et ainsi chargé les données. 
+                  </p>
                   <h6>a) Le problème du « lazy-loading »</h6>
                   <p>
                     Le « lazy-loading » (“chargement fainéant” en français)
@@ -378,43 +384,26 @@ export default class CRPage extends React.Component {
                     analyserons ce code html final avec Jsoup (qui est beaucoup
                     plus rapide et performant que selenium pour le web scraping)
                   </p>
-                  <h5>B. UTILISATION DE JSOUP</h5>
+                  <h5>C. UTILISATION DE JSOUP</h5>
                   <p>
                     Dans l'application, on utilise JSOUP afin d'aller chercher
-                    la description, les informations nutritionnels. Pour chaque
-                    produit qu'on trouve (avec selenium), on se rend sur la page
-                    du produit avec JSOUP pour prendre les informations dont
-                    nous avons besoin. On utilise plutôt JSOUP que selenium car
-                    sur cette page, on n'a pas besoin de JavaScript.
+                    les données. On parse le html obtenu en utilisant selenium
+                    afin d'optimiser le web scraping.
                     <SyntaxHighlighter
                       language="java"
                       style={tomorrow}
                       showLineNumbers
                     >
-                      {`connection = Jsoup.connect(item.findElement(By.cssSelector("a.grocery-item__product-img")).getAttribute("href"));
-
-//set user agent 
-connection.userAgent("Mozilla/5.0");
-
- // set timeout to 10 seconds
-connection.timeout(10 * 1000);
-
-// get the HTML document
-doc = connection.get();
-
-String desc = doc.selectFirst("div.product__description-details").text();
-Element ingredientsEle = doc.selectFirst("div.product__ingredients-allergens-details");
-                        Element infoNutriEle = doc.selectFirst(".Nutrition-tixjv9-0");
-
-String ingredients = ingredientsEle == null ? "" : ingredientsEle.text();
-String infoNutri = infoNutriEle == null ? "" : infoNutriEle.text();
-
-Item itemObject = new Item(itemName, info, itemPrice, itemWeight, imageUrl, desc, ingredients, 
-                                infoNutri);
-jsonInString.add(itemObject);`}
+                      {`// data mining
+String htmlWithJs = driver.findElementByCssSelector("div.cards:nth-child(1)").getAttribute("innerHTML");
+// close the selenium browser
+driver.quit(); 
+Document doc1 = Jsoup.parse(htmlWithJs);
+java.util.List<Item> jsonInString = new ArrayList<>();
+Elements produits = doc1.select("div.grocery-item");`}
                     </SyntaxHighlighter>
                   </p>
-                  <h5>C. UTILISATION DE GSONBUILDER</h5>
+                  <h5>D. UTILISATION DE GSONBUILDER</h5>
                   <p>
                     Les données sont envoyées à JavaScript sous le format Json.
                     Pour convertir un objet java au format JSON, j'ai utilisé la
@@ -519,13 +508,34 @@ public String getString(){
                   </ul>
 
                   <p>
-                    {/* Les produits récupérer avec le codebar (avec openfoodfact) */}
+                    La gestion du code-barres se fait uniquement avec le
+                    JavaScript. À l'aide d'une expression régulière, on vérifie
+                    si la chaîne de caractère entrée dans l'input est un
+                    code-barre. Si c'est le cas, on fait un fetch vers la page :
+                    <br/>
+                    "https://world.openfoodfacts.org/api/v0/product/" +
+                    code-barre+ ".json".
+                    <br />
+                    Afin de récupérer les informations du produit au format json.
                   </p>
                 </section>
                 <section id="4">
                   <hr data-content="IV. LIMITES DU PROJET" class="hr-text"></hr>
-                  {/* Limites du projet : 
-                    - Limite de 96 produits max par recherche à cause du temps de recherche trop élevé (selenium + quantite de produit elevé) */}
+                  <p>
+                    Le nombre de produits envoyé par le serveur java est
+                    limité à 72. En effet, à cause du problème d'efficacité
+                    parler plus tôt, j'ai été obligé de limiter le nombre de
+                    produits envoyé par le serveur. Ainsi, l'attente entre
+                    chaque recherche de produit reste raisonnable.
+                  </p>
+                  <p>
+                    Dans de rares cas, les images ne sont pas chargées par sélénium. Dans ce cas-là, 
+                    une image par défaut apparaîtra pour informer l'utilisateur que l'image n'a pas été charger. 
+                  </p>
+                  <p>
+                    Quelques fois l'api java ne trouve aucun produit, alors que la recherche sur le site trouve bien des produits. 
+                    Dans ce cas de figure, il faut relancer la recherche ou recharger la page.
+                  </p>
                 </section>
                 <section id="5">
                   <hr data-content="V. SOURCES" class="hr-text"></hr>
@@ -602,6 +612,19 @@ public String getString(){
                         https://jsoup.org/apidocs/overview-summary.html
                       </a>
                     </li>
+                    <li>
+                      React Bootstrap : Site officiel de React Boostrap <br />{" "}
+                      <a href="https://react-bootstrap.github.io/">
+                        https://react-bootstrap.github.io/
+                      </a>
+                    </li>
+                    <li>
+                      Project Tyrus : Java API for WebSocket <br />{" "}
+                      <a href="https://tyrus-project.github.io/">
+                        https://tyrus-project.github.io/
+                      </a>
+                    </li>
+                    
                   </ul>
                 </section>
               </Container>

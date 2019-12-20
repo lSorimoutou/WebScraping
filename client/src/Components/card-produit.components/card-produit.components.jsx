@@ -19,7 +19,7 @@ function MyVerticallyCenteredModal(props) {
     >
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
-          Informations sur le produit
+          {props.name}
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
@@ -88,7 +88,11 @@ export default function RecipeReviewCard(props) {
         <Card.Body>
           <Card.Title onClick={() => setModalShow(true)}>{props.name}</Card.Title>
           <Card.Text>
-            {props.info + " " + props.weight}
+            <span className="marque">
+              {props.info}
+            </span>
+            <br></br>
+            {props.weight}
           </Card.Text>
           <br></br>
           <span className="price">
@@ -105,6 +109,7 @@ export default function RecipeReviewCard(props) {
           infoNutri={props.infoNutri}
           url={props.url}
           show={modalShow}
+          name={props.name}
           onHide={() => setModalShow(false)}
         />
       </Card>

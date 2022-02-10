@@ -11,7 +11,7 @@
     "@material-ui/icons": "^4.5.1",
     "bootstrap": "^4.4.1",
     "gh-pages": "^2.1.1",
-    "node-sass": "^4.12.0",
+    "node-sass": "^7.0.0",
     "prismjs": "^1.17.1",
     "react": "^16.10.2",
     "react-bootstrap": "^1.0.0-beta.16",
